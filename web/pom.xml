@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>projectx</artifactId>
+        <groupId>kpi.pti.labs.projectx</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>web</artifactId>
+    <packaging>war</packaging>
+
+    <name>Web</name>
+
+    <dependencies>
+        <!-- Service Layer -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- EJB -->
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+        </dependency>
+
+        <!-- JSF -->
+        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <cargo.glassfish.home>/opt/glassfish4</cargo.glassfish.home>
+        <cargo.glassfish.host>localhost</cargo.glassfish.host>
+        <cargo.glassfish.port>8080</cargo.glassfish.port>
+        <cargo.glassfish.domain>domain1</cargo.glassfish.domain>
+        <cargo.glassfish.deploy.url>projectx</cargo.glassfish.deploy.url>
+    </properties>
+
+
+    <build>
+        <finalName>web</finalName>
+
+        <plugins>
+            <!-- Cargo -->
+            <!--    Automatically deploy application into GlassFish Server -->
+            <!--    Run mvn cargo:run to deploy, then open http;/localhost:8080/projectx -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.4.0</version>
+
+                <configuration>
+                    <container>
+                        <containerId>glassfish4x</containerId>
+                        <type>installed</type>
+                        <home>${cargo.glassfish.home}</home>
+                    </container>
+
+                    <configuration>
+                        <type>standalone</type>
+                        <home>${cargo.glassfish.home}/glassfish/domains</home>
+
+                        <properties>
+                            <cargo.hostname>${cargo.glassfish.host}</cargo.hostname>
+                            <cargo.servlet.port>${cargo.glassfish.port}</cargo.servlet.port>
+                            <cargo.glassfish.domain.name>${cargo.glassfish.domain}</cargo.glassfish.domain.name>
+
+                            <!-- for debugging purposes only -->
+                            <cargo.jvmargs>
+                                <!--Xdebug-->
+                                <!--Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=18000-->
+                                <!--Xnoagent-->
+                                <!--Djava.compiler=NONE-->
+                            </cargo.jvmargs>
+                        </properties>
+                    </configuration>
+
+                    <deployables>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>${project.artifactId}</artifactId>
+                            <type>war</type>
+                            <properties>
+                                <context>/${cargo.glassfish.deploy.url}</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
