@@ -3,7 +3,7 @@ package projectx.domain;
 import java.util.Date;
 
 /**
- * @author proger
+ * @author vladimir
  * @since 5/18/15
  */
 public class Request {
