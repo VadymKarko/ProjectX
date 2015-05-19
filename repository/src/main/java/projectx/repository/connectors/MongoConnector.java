@@ -1,9 +1,6 @@
 package projectx.repository.connectors;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.Mongo;
+import com.mongodb.*;
 import projectx.domain.Book;
 import projectx.repository.wrappers.BookWrapper;
 
@@ -29,7 +26,12 @@ public class MongoConnector {
     @PostConstruct
     public void init() {
         try {
-            mongo = new Mongo();
+            List addressList = new ArrayList();
+            addServerAddress(addressList, new ServerAddress("127.0.0.1",27018));
+            addServerAddress(addressList, new ServerAddress("127.0.0.1",27019));
+            addServerAddress(addressList, new ServerAddress("127.0.0.1",270120));
+            mongo = new Mongo(addressList);
+            mongo.slaveOk();
             db = mongo.getDB("books");
             collection = db.getCollection("books");
             if (collection == null) {
@@ -42,6 +44,10 @@ public class MongoConnector {
 
     public void insert(final Book book) {
         collection.insert(BookWrapper.wrap(book));
+    }
+
+    public void addServerAddress(List<ServerAddress> addressList, ServerAddress address){
+        addressList.add(address);
     }
 
     public List<Book> select() {

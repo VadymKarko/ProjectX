@@ -32,14 +32,6 @@ public class Doctor {
         this.lastName = lastName;
     }
 
-    public String getFatherName() {
-        return fatherName;
-    }
-
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
-    }
-
     public String getLogin() {
         return login;
     }
