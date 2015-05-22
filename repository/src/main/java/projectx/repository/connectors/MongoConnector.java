@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Singleton
 public class MongoConnector {
-    private Mongo mongo;
+    private MongoClient mongo;
     private DB db;
     private DBCollection collection;
 
@@ -27,11 +27,11 @@ public class MongoConnector {
     public void init() {
         try {
             List addressList = new ArrayList();
-            addServerAddress(addressList, new ServerAddress("127.0.0.1",27018));
-            addServerAddress(addressList, new ServerAddress("127.0.0.1",27019));
-            addServerAddress(addressList, new ServerAddress("127.0.0.1",270120));
-            mongo = new Mongo(addressList);
-            mongo.slaveOk();
+            addServerAddress(addressList, new ServerAddress("proger-vm",27018));
+            addServerAddress(addressList, new ServerAddress("proger-vm",27019));
+            addServerAddress(addressList, new ServerAddress("proger-vm",27020));
+            mongo = new MongoClient(addressList);
+            mongo.setReadPreference(ReadPreference.secondary());
             db = mongo.getDB("books");
             collection = db.getCollection("books");
             if (collection == null) {
