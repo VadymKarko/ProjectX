@@ -10,6 +10,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.mongodb.morphia</groupId>
+            <artifactId>morphia</artifactId>
+            <version>1.0.0-rc0</version>
+        </dependency>
+    </dependencies>
+
     <artifactId>domain</artifactId>
     <packaging>jar</packaging>
 

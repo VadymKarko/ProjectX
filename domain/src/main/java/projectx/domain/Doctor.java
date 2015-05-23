@@ -1,12 +1,21 @@
 package projectx.domain;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Reference;
+
 import java.util.List;
 
 /**
  * @author vladimir
  * @since 5/18/15
  */
+@Entity
 public class Doctor {
+
+    @Id
+    private ObjectId id;
 
     private String firstName;
     private String lastName;
@@ -14,6 +23,7 @@ public class Doctor {
 
     private String login;
     private String password;
+    @Reference
     private List<Request> requestList;
 
     public String getFirstName() {
@@ -54,5 +64,13 @@ public class Doctor {
 
     public void setRequestList(List<Request> requestList) {
         this.requestList = requestList;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 }

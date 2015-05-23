@@ -23,12 +23,12 @@ public class LibraryService {
 
     @PostConstruct
     private void init() {
-        library = connector.select();
+        //library = connector.select();
     }
 
     public void addBook(Book book) {
         library.add(book);
-        connector.insert(book);
+        //connector.insert(book);
     }
 
     public List<Book> getLibrary() {
