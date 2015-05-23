@@ -12,20 +12,21 @@
 <h:body>
     <h1>ProjectX Skeleton</h1>
     <h3>Add new book</h3>
-    <h:form>
-        Title:<h:inputText value="#{mainBean.book.title}"/>
-        Author:<h:inputText value="#{mainBean.book.author}"/>
-        Pages:<h:inputText value="#{mainBean.book.pages}"/>
-        <h:commandButton actionListener="#{mainBean.add()}"
-                         action="show" title="Add" value="submit"/>
-    </h:form>
+    <h:outputText value="#{home.hello()}"/>
+    <!--<h:form>-->
+        <!--Title:<h:inputText value="#{mainBean.book.title}"/>-->
+        <!--Author:<h:inputText value="#{mainBean.book.author}"/>-->
+        <!--Pages:<h:inputText value="#{mainBean.book.pages}"/>-->
+        <!--<h:commandButton actionListener="#{mainBean.add()}"-->
+                         <!--action="show" title="Add" value="submit"/>-->
+    <!--</h:form>-->
     <hr/>
-    <h3>Library</h3>
+    <h3>Requests</h3>
     <h:form>
-        <h:dataTable value="#{mainBean.load()}" var="i">
-            <h:column><f:facet name = "header">Title</f:facet>#{i.title}</h:column>
-            <h:column><f:facet name = "header">Author</f:facet>#{i.author}</h:column>
-            <h:column><f:facet name = "header">Pages</f:facet>#{i.pages}</h:column>
+        <h:dataTable value="#{home.load()}" var="i">
+            <h:column><f:facet name = "header">First Name</f:facet>#{i.firstName}</h:column>
+            <h:column><f:facet name = "header">Lst Name</f:facet>#{i.lastName}</h:column>
+            <h:column><f:facet name = "header">illnessDescription</f:facet>#{i.illnessDescription}</h:column>
         </h:dataTable>
     </h:form>
 </h:body>

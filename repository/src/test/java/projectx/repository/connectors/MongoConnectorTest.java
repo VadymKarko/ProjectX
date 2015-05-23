@@ -5,7 +5,8 @@ import com.mongodb.ServerAddress;
 import org.junit.Test;
 import org.mongodb.morphia.Datastore;
 import projectx.domain.Request;
-import projectx.repository.impl.RequestDAOImpl;
+import projectx.repository.Constants;
+import projectx.repository.dao.RequestDAO;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -61,8 +62,9 @@ public class MongoConnectorTest {
     public void testSelectRequest() throws MongoException {
         MongoConnector mongoConnector = new MongoConnector();
         mongoConnector.init();
-        RequestDAOImpl requestDAOImpl = new RequestDAOImpl(MongoConnector.getMongo(),MongoConnector.getMorphia(),"Requests");
-        List<Request> requestList = requestDAOImpl.findAllRequests();
+        RequestDAO requestDAO = new RequestDAO(MongoConnector.getMongo(),MongoConnector.getMorphia(), Constants.DATABASE_NAME);
+        List<Request> requestList = requestDAO.findAllRequests();
+        System.out.println(requestList);
     }
 /*
    @Test
@@ -78,7 +80,7 @@ public class MongoConnectorTest {
 //        MongoConnector mongoConnector = new MongoConnector();
 //        mongoConnector.init();
 //        Morphia morphia = new Morphia();
-//        DoctorDAOImpl doctorDAO = new DoctorDAOImpl(mongoConnector.getMongo(),morphia,"doctors");
+//        DoctorDAO doctorDAO = new DoctorDAO(mongoConnector.getMongo(),morphia,"doctors");
 //        List<Doctor> doctorsList = doctorDAO.find().asList();
 //
 //       List<Doctor> doctors = mongoConnector.selectDoctors();

@@ -1,4 +1,4 @@
-package projectx.repository.impl;
+package projectx.repository.dao;
 
 import com.mongodb.MongoClient;
 import org.bson.types.ObjectId;
@@ -8,22 +8,21 @@ import projectx.domain.Doctor;
 import projectx.repository.Constants;
 import projectx.repository.connectors.MongoConnector;
 
-import javax.ejb.Stateless;
 import java.util.List;
 
 /**
  * @author proger
  * @since 5/23/15
  */
-@Stateless
-public class DoctorDAOImpl extends BasicDAO<Doctor,ObjectId> {
+
+public class DoctorDAO extends BasicDAO<Doctor,ObjectId> {
 
 
-    public DoctorDAOImpl(MongoClient mongoClient, Morphia morphia, String dbName) {
+    public DoctorDAO(MongoClient mongoClient, Morphia morphia, String dbName) {
         super(mongoClient, morphia, dbName);
     }
 
-    public DoctorDAOImpl(){
+    public DoctorDAO(){
         super(MongoConnector.getMongo(),MongoConnector.getMorphia(), Constants.DATABASE_NAME);
     }
 
@@ -32,14 +31,14 @@ public class DoctorDAOImpl extends BasicDAO<Doctor,ObjectId> {
         return getDs().find(Doctor.class).asList();
     }
 
-    public void saveRequest(Doctor doctor){
+    public void saveDoctor(Doctor doctor){
         getDs().save(doctor);
     }
-    public void updateRequest( Doctor doctor ){
+    public void updateDoctor( Doctor doctor ){
         getDs().merge( doctor );
     }
 
-    public void removeRequest( Doctor doctor ){
+    public void removeDoctor( Doctor doctor ){
         getDs().delete( doctor );
     }
 

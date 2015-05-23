@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is an example of repository
@@ -33,10 +34,10 @@ public class MongoConnector {
     @PostConstruct
     public void init() {
         try {
-            ArrayList<ServerAddress> addressList = new ArrayList<ServerAddress>();
-            addServerAddress(addressList, new ServerAddress("proger-vm",  27018));
-            addServerAddress(addressList, new ServerAddress("proger-vm",  27019));
-            addServerAddress(addressList, new ServerAddress("proger-vm",  27020));
+            List<ServerAddress> addressList = new ArrayList<ServerAddress>();
+            addServerAddress(addressList, new ServerAddress(Constants.HOST_NAME,  27018));
+            addServerAddress(addressList, new ServerAddress(Constants.HOST_NAME,  27019));
+            addServerAddress(addressList, new ServerAddress(Constants.HOST_NAME,  27020));
             mongo = new MongoClient(addressList);
             mongo.setReadPreference(ReadPreference.secondary());
             morphia = new Morphia();
@@ -61,7 +62,7 @@ public class MongoConnector {
         }
     }
 
-    public void addServerAddress(ArrayList<ServerAddress> addressList, ServerAddress address) {
+    public void addServerAddress(List<ServerAddress> addressList, ServerAddress address) {
         addressList.add(address);
     }
 
