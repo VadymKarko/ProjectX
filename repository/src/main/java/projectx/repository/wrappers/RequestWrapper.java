@@ -27,7 +27,7 @@ public class RequestWrapper {
         final Request request = new Request();
 
         request.setFirstName((String) document.get("firstname"));
-        request.setFirstName((String) document.get("lastname"));
+        request.setLastName((String) document.get("lastname"));
         request.setIllnessDescription((String) document.get("illnessdescription"));
         request.setSymptoms((String) document.get("symptoms"));
         request.setPhoneNumber((String) document.get("phonenumber"));
