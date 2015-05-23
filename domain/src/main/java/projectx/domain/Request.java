@@ -24,14 +24,6 @@ public class Request {
         this.firstName = firstName;
     }
 
-    public String getFatherName() {
-        return fatherName;
-    }
-
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
-    }
-
     public String getLastName() {
         return lastName;
     }

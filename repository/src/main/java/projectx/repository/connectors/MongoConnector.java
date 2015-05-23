@@ -1,17 +1,15 @@
 package projectx.repository.connectors;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.Mongo;
-import projectx.domain.Book;
-import projectx.repository.wrappers.BookWrapper;
+import com.mongodb.*;
+import projectx.domain.Doctor;
+import projectx.domain.Request;
+import projectx.repository.wrappers.DoctorWrapper;
+import projectx.repository.wrappers.RequestWrapper;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is an example of repository
@@ -22,38 +20,84 @@ import java.util.List;
  */
 @Singleton
 public class MongoConnector {
-    private Mongo mongo;
-    private DB db;
-    private DBCollection collection;
-
+    private MongoClient mongo;
+    private DB dbRequests;
+    private DB dbDoctors;
+    private DBCollection collectionRequests;
+    private DBCollection collectionDoctors;
+    private ReplicaSetStatus replicaSetStatus;
     @PostConstruct
     public void init() {
         try {
-            mongo = new Mongo();
-            db = mongo.getDB("books");
-            collection = db.getCollection("books");
-            if (collection == null) {
-                collection = db.createCollection("books", null);
-            }
+            ArrayList<ServerAddress> addressList = new ArrayList<ServerAddress>();
+            addServerAddress(addressList, new ServerAddress("proger-vm", (int) 27018));
+            addServerAddress(addressList, new ServerAddress("proger-vm", (int) 27019));
+            addServerAddress(addressList, new ServerAddress("proger-vm", (int) 27020));
+            mongo = new MongoClient(addressList);
+            mongo.setReadPreference(ReadPreference.secondary());
+            dbRequests = mongo.getDB("requests");
+            dbDoctors = mongo.getDB("doctors");
+            collectionRequests = dbRequests.getCollection("requests");
+            collectionDoctors = dbRequests.getCollection("doctors");
+            if (collectionRequests  == null) {
+                    collectionRequests  = dbRequests.createCollection("requests", null);
+                }
+            if (collectionDoctors  == null){
+                    collectionDoctors  = dbDoctors.createCollection("requests", null);
+                }
         } catch (UnknownHostException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (MongoException.Network e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (MongoException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IllegalArgumentException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public void insert(final Book book) {
-        collection.insert(BookWrapper.wrap(book));
+    public void insertRequest(final Request request) {
+        collectionRequests.insert(RequestWrapper.wrap(request));
     }
 
-    public List<Book> select() {
-        final List<Book> library = new ArrayList<Book>();
-        final DBCursor cursor = collection.find();
-        Book book;
+    public void insertDoctor(final Doctor doctor) {
+        collectionDoctors.insert(DoctorWrapper.wrap(doctor));
+    }
 
+    public void addServerAddress(ArrayList<ServerAddress> addressList, ServerAddress address){
+        addressList.add(address);
+    }
+
+    public boolean replMasterStatus(MongoClient mongo){
+        replicaSetStatus = mongo.getReplicaSetStatus();
+        return replicaSetStatus.getMaster() != null;
+    }
+
+
+    public MongoClient getMongo(){
+        return this.mongo;
+    }
+
+
+    public ArrayList<Request> selectRequests() {
+        final ArrayList<Request> requests = new ArrayList<Request>();
+        final DBCursor cursor = collectionRequests.find();
+        Request request;
         while (cursor.hasNext()) {
-            book = BookWrapper.unwrap(cursor.next());
-            library.add(book);
+            request = RequestWrapper.unwrap(cursor.next());
+            requests.add(request);
         }
+        return requests;
+    }
 
-        return library;
+    public ArrayList<Doctor> selectDoctors() {
+        final ArrayList<Doctor> doctors = new ArrayList<Doctor>();
+        final DBCursor cursor = collectionDoctors.find();
+        Doctor doctor;
+        while (cursor.hasNext()) {
+            doctor = DoctorWrapper.unwrap(cursor.next());
+            doctors.add(doctor);
+        }
+        return doctors;
     }
 }

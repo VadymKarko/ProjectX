@@ -37,9 +37,7 @@ public class Book {
         return title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
+    public String getAuthor() { return author; }
 
     public int getPages() {
         return pages;

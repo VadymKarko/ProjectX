@@ -27,7 +27,7 @@ public class BookWrapper {
 
         book.setTitle((String) document.get("title"));
         book.setAuthor((String) document.get("author"));
-        book.setPages((Integer) document.get("pages"));
+        book.setPages(Integer.valueOf(document.get("pages").toString()));
 
         return book;
     }
