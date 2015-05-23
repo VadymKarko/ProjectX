@@ -1,9 +1,9 @@
 package projectx.repository.connectors;
 
 import com.mongodb.*;
-import projectx.domain.Book;
+import projectx.domain.Doctor;
 import projectx.domain.Request;
-import projectx.repository.wrappers.BookWrapper;
+import projectx.repository.wrappers.DoctorWrapper;
 import projectx.repository.wrappers.RequestWrapper;
 
 import javax.annotation.PostConstruct;
@@ -21,8 +21,10 @@ import java.util.ArrayList;
 @Singleton
 public class MongoConnector {
     private MongoClient mongo;
-    private DB db;
-    private DBCollection collection;
+    private DB dbRequests;
+    private DB dbDoctors;
+    private DBCollection collectionRequests;
+    private DBCollection collectionDoctors;
     private ReplicaSetStatus replicaSetStatus;
     @PostConstruct
     public void init() {
@@ -33,11 +35,16 @@ public class MongoConnector {
             addServerAddress(addressList, new ServerAddress("proger-vm", (int) 27020));
             mongo = new MongoClient(addressList);
             mongo.setReadPreference(ReadPreference.secondary());
-            db = mongo.getDB("requests");
-            collection = db.getCollection("requests");
-            if (collection == null) {
-                collection = db.createCollection("requests", null);
-            }
+            dbRequests = mongo.getDB("requests");
+            dbDoctors = mongo.getDB("doctors");
+            collectionRequests = dbRequests.getCollection("requests");
+            collectionDoctors = dbRequests.getCollection("doctors");
+            if (collectionRequests  == null) {
+                    collectionRequests  = dbRequests.createCollection("requests", null);
+                }
+            if (collectionDoctors  == null){
+                    collectionDoctors  = dbDoctors.createCollection("requests", null);
+                }
         } catch (UnknownHostException e) {
             throw new RuntimeException(e.getMessage());
         } catch (MongoException.Network e) {
@@ -49,8 +56,12 @@ public class MongoConnector {
         }
     }
 
-    public void insert(final Book book) {
-        collection.insert(BookWrapper.wrap(book));
+    public void insertRequest(final Request request) {
+        collectionRequests.insert(RequestWrapper.wrap(request));
+    }
+
+    public void insertDoctor(final Doctor doctor) {
+        collectionDoctors.insert(DoctorWrapper.wrap(doctor));
     }
 
     public void addServerAddress(ArrayList<ServerAddress> addressList, ServerAddress address){
@@ -59,31 +70,34 @@ public class MongoConnector {
 
     public boolean replMasterStatus(MongoClient mongo){
         replicaSetStatus = mongo.getReplicaSetStatus();
-        if (replicaSetStatus.getMaster() == null)
-            {
-                return false;
-            }
-        else
-            {
-                return true;
-            }
+        return replicaSetStatus.getMaster() != null;
     }
+
 
     public MongoClient getMongo(){
         return this.mongo;
     }
 
 
-    public ArrayList<Request> select() {
-        final ArrayList<Request> library = new ArrayList<Request>();
-        final DBCursor cursor = collection.find();
-        Request book;
-
+    public ArrayList<Request> selectRequests() {
+        final ArrayList<Request> requests = new ArrayList<Request>();
+        final DBCursor cursor = collectionRequests.find();
+        Request request;
         while (cursor.hasNext()) {
-            book = RequestWrapper.unwrap(cursor.next());
-            library.add(book);
+            request = RequestWrapper.unwrap(cursor.next());
+            requests.add(request);
         }
+        return requests;
+    }
 
-        return library;
+    public ArrayList<Doctor> selectDoctors() {
+        final ArrayList<Doctor> doctors = new ArrayList<Doctor>();
+        final DBCursor cursor = collectionDoctors.find();
+        Doctor doctor;
+        while (cursor.hasNext()) {
+            doctor = DoctorWrapper.unwrap(cursor.next());
+            doctors.add(doctor);
+        }
+        return doctors;
     }
 }

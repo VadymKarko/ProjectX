@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author proger
@@ -22,7 +22,7 @@ public class MongoConnectorTest {
     public void testInit() throws UnknownHostException, MongoException {
     MongoConnector mongoConnector = new MongoConnector();
         mongoConnector.init();
-        List<Request> library = mongoConnector.select();
+        List<Request> library = mongoConnector.selectRequests();
         assertEquals("Oleg", library.get(0).getFirstName());
     }
 
@@ -40,7 +40,34 @@ public class MongoConnectorTest {
     public void testReplMasterStatus() throws MongoException {
         MongoConnector mongoConnector = new MongoConnector();
         mongoConnector.init();
-        assertTrue(mongoConnector.replMasterStatus(mongoConnector.getMongo()));
+        assertFalse(mongoConnector.replMasterStatus(mongoConnector.getMongo()));
     }
+
+    @Test
+    public void testSelectRequest() throws MongoException {
+        MongoConnector mongoConnector = new MongoConnector();
+        mongoConnector.init();
+        List<Request> requests = mongoConnector.selectRequests();
+        assertEquals("Oleg", requests.get(0).getFirstName());
+    }
+/*
+   @Test
+    public void testSelectDoctors() throws MongoException {
+        MongoConnector mongoConnector = new MongoConnector();
+        mongoConnector.init();
+        List<Doctor> doctors = mongoConnector.selectDoctors();
+        assertEquals("Oleg", doctors.get(0).getFirstName());
+    }*/
+
+    @Test
+    public void testInsertRequests() throws MongoException {
+
+    }
+
+    @Test
+    public void testInsertDoctors() throws MongoException {
+
+    }
+
 
 }
