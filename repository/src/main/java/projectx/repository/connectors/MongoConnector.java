@@ -21,8 +21,7 @@ import java.util.ArrayList;
 @Singleton
 public class MongoConnector {
     private MongoClient mongo;
-    private DB dbRequests;
-    private DB dbDoctors;
+    private DB dbHospital;
     private DBCollection collectionRequests;
     private DBCollection collectionDoctors;
     private ReplicaSetStatus replicaSetStatus;
@@ -35,15 +34,14 @@ public class MongoConnector {
             addServerAddress(addressList, new ServerAddress("proger-vm", (int) 27020));
             mongo = new MongoClient(addressList);
             mongo.setReadPreference(ReadPreference.secondary());
-            dbRequests = mongo.getDB("requests");
-            dbDoctors = mongo.getDB("doctors");
-            collectionRequests = dbRequests.getCollection("requests");
-            collectionDoctors = dbRequests.getCollection("doctors");
+            dbHospital= mongo.getDB("Hospital");
+            collectionRequests = dbHospital.getCollection("Requests");
+            collectionDoctors = dbHospital.getCollection("Doctors");
             if (collectionRequests  == null) {
-                    collectionRequests  = dbRequests.createCollection("requests", null);
+                    collectionRequests  = dbHospital.createCollection("Requests", null);
                 }
             if (collectionDoctors  == null){
-                    collectionDoctors  = dbDoctors.createCollection("requests", null);
+                    collectionDoctors  = dbHospital.createCollection("Doctors", null);
                 }
         } catch (UnknownHostException e) {
             throw new RuntimeException(e.getMessage());

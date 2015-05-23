@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author proger
@@ -40,7 +40,7 @@ public class MongoConnectorTest {
     public void testReplMasterStatus() throws MongoException {
         MongoConnector mongoConnector = new MongoConnector();
         mongoConnector.init();
-        assertFalse(mongoConnector.replMasterStatus(mongoConnector.getMongo()));
+        assertTrue(mongoConnector.replMasterStatus(mongoConnector.getMongo()));
     }
 
     @Test
