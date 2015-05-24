@@ -39,6 +39,12 @@
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
         </dependency>
+
+        <!-- Hazelcast -->
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

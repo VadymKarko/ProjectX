@@ -70,6 +70,13 @@
                 <version>4.11</version>
                 <scope>test</scope>
             </dependency>
+
+            <!-- Hazelcast -->
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast</artifactId>
+                <version>3.4.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

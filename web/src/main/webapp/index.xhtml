@@ -3,7 +3,6 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xml:lang="en" lang="en">
 <h:head>
@@ -11,21 +10,25 @@
 </h:head>
 <h:body>
     <h1>ProjectX Skeleton</h1>
-    <h3>Add new book</h3>
+
+    <h3>Service</h3>
     <h:form>
-        Title:<h:inputText value="#{mainBean.book.title}"/>
-        Author:<h:inputText value="#{mainBean.book.author}"/>
-        Pages:<h:inputText value="#{mainBean.book.pages}"/>
+        message:<h:inputText value="#{mainBean.message}"/>
         <h:commandButton actionListener="#{mainBean.add()}"
                          action="show" title="Add" value="submit"/>
     </h:form>
+
     <hr/>
-    <h3>Library</h3>
+    <h3>Hazelcast:</h3>
     <h:form>
-        <h:dataTable value="#{mainBean.load()}" var="i">
-            <h:column><f:facet name = "header">Title</f:facet>#{i.title}</h:column>
-            <h:column><f:facet name = "header">Author</f:facet>#{i.author}</h:column>
-            <h:column><f:facet name = "header">Pages</f:facet>#{i.pages}</h:column>
+        <h:dataTable value="#{mainBean.messages}" var="i">
+            <h:column>#{i}</h:column>
+        </h:dataTable>
+    </h:form>
+
+    <h:form>
+        <h:dataTable value="#{mainBean.members}" var="i">
+            <h:column>#{i}</h:column>
         </h:dataTable>
     </h:form>
 </h:body>
