@@ -1,16 +1,19 @@
 package projectx.repository.connectors;
 
-import com.mongodb.*;
+import com.mongodb.MongoClient;
+import com.mongodb.ReadPreference;
+import com.mongodb.ServerAddress;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import projectx.domain.Doctor;
 import projectx.domain.Request;
-import projectx.repository.Constants;
+import projectx.repository.dao.DataProvider;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
+import javax.ejb.Startup;
+import java.util.Arrays;
 
 /**
  * This is an example of repository
@@ -20,69 +23,56 @@ import java.util.List;
  * @since 5/17/15
  */
 @Singleton
+@Startup
 public class MongoConnector {
-    private static MongoClient mongo;
-    private static DB dbHospital;
-    private static Morphia morphia;
-    private static Datastore datastore;
+    public static final String HOST_NAME = "localhost";
+    public static final String DATABASE_NAME = "hospital";
 
-    private DBCollection collection;
+    private MongoClient mongo;
 
+    private DataProvider<Doctor> doctors;
+    private DataProvider<Request> requests;
 
-    private ReplicaSetStatus replicaSetStatus;
 
     @PostConstruct
     public void init() {
         try {
-            List<ServerAddress> addressList = new ArrayList<ServerAddress>();
-            addServerAddress(addressList, new ServerAddress(Constants.HOST_NAME,  27018));
-            addServerAddress(addressList, new ServerAddress(Constants.HOST_NAME,  27019));
-            addServerAddress(addressList, new ServerAddress(Constants.HOST_NAME,  27020));
-            mongo = new MongoClient(addressList);
-            mongo.setReadPreference(ReadPreference.secondary());
-            morphia = new Morphia();
+            // TODO: Hardcoded ports? Foooo...horrible coding style. Fix!
+            mongo = new MongoClient(Arrays.asList(
+                    new ServerAddress(HOST_NAME, 27018),
+                    new ServerAddress(HOST_NAME, 27019),
+                    new ServerAddress(HOST_NAME, 27020)
+            ));
 
-            datastore = morphia.createDatastore(mongo, Constants.DATABASE_NAME);
-            morphia.map(Request.class);
-            dbHospital = mongo.getDB(Constants.DATABASE_NAME);
-            if (dbHospital.getCollection(Constants.REQUESTS) == null) {
-                dbHospital.createCollection(Constants.REQUESTS, null);
-            }
-            if (dbHospital.getCollection(Constants.DOCTORS) == null) {
-                dbHospital.createCollection(Constants.DOCTORS, null);
-            }
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (MongoException.Network e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (MongoException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (IllegalArgumentException e) {
+            mongo.setReadPreference(ReadPreference.secondary());
+
+            final Morphia morphia = new Morphia();
+            final Datastore datastore = morphia.createDatastore(mongo, DATABASE_NAME);
+            morphia.map(Doctor.class, Request.class);
+
+            doctors = new DataProvider<Doctor>(Doctor.class, datastore);
+            requests = new DataProvider<Request>(Request.class, datastore);
+
+        } catch (Exception e) {
+            // should catch exceptions instead of throwing, because of @PostConstruct
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public void addServerAddress(List<ServerAddress> addressList, ServerAddress address) {
-        addressList.add(address);
+    @PreDestroy
+    public void cleanup () {
+        mongo.close();
     }
 
-    public boolean replMasterStatus(MongoClient mongo) {
-        replicaSetStatus = mongo.getReplicaSetStatus();
-        return replicaSetStatus.getMaster() != null;
+    public boolean isMasterAlive() {
+        return mongo.getReplicaSetStatus().getMaster() != null;
     }
 
-
-    public static MongoClient getMongo() {
-        return mongo;
+    public DataProvider<Doctor> getDoctors() {
+        return doctors;
     }
 
-    public static Morphia getMorphia() {
-        return morphia;
+    public DataProvider<Request> getRequests() {
+        return requests;
     }
-
-    public static Datastore getDatastore() {
-        return datastore;
-    }
-
-
 }

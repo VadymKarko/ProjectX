@@ -7,6 +7,7 @@ package projectx.domain;
  * @author vadym
  * @since 5/17/15
  */
+@Deprecated
 public class Book {
     private String title;
     private String author;

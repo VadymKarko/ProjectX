@@ -10,6 +10,7 @@ import java.util.Date;
  * @author GreyFox
  * @since 5/19/15
  */
+@Deprecated
 public class RequestWrapper {
 
     public static DBObject wrap(final Request request) {

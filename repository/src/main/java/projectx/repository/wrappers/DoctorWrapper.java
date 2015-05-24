@@ -11,6 +11,7 @@ import java.util.List;
  * @author GreyFox12
  * @since 5/19/15
  */
+@Deprecated
 public class DoctorWrapper {
 
     public static DBObject wrap(final Doctor doctor) {

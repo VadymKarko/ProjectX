@@ -11,10 +11,10 @@
     </parent>
 
     <dependencies>
+        <!-- MongoDB Morphia -->
         <dependency>
             <groupId>org.mongodb.morphia</groupId>
             <artifactId>morphia</artifactId>
-            <version>1.0.0-rc0</version>
         </dependency>
     </dependencies>
 

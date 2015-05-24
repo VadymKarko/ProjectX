@@ -11,13 +11,12 @@ import java.util.Date;
  * @since 5/18/15
  */
 @Entity
-public class Request {
+public class Request implements DomainItem {
 
     @Id
     private ObjectId id;
 
     private String firstName;
-    private String fatherName;
     private String lastName;
     private String illnessDescription;
     private String symptoms;
@@ -27,13 +26,14 @@ public class Request {
     public Request() {
     }
 
-    public Request(String firstName, String lastName, String illnessDescription, String symptoms, String phoneNumber) {
+    public Request(String firstName, String lastName, String illnessDescription,
+                   String symptoms, String phoneNumber, Date date) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.illnessDescription = illnessDescription;
         this.symptoms = symptoms;
         this.phoneNumber = phoneNumber;
-        this.preferredDate = new Date();
+        this.preferredDate = date;
     }
 
     public String getFirstName() {
@@ -87,6 +87,7 @@ public class Request {
     public ObjectId getId() {
         return id;
     }
+
 
     @Override
     public String toString() {

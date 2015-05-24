@@ -16,6 +16,7 @@ import java.util.List;
  * @author vadym
  * @since 5/16/15
  */
+@Deprecated
 @ManagedBean
 public class MainBean implements Serializable {
     @EJB

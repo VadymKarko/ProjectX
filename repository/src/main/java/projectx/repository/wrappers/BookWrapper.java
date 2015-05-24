@@ -11,6 +11,7 @@ import projectx.domain.Book;
  * @author vadym
  * @since 5/17/15
  */
+@Deprecated
 public class BookWrapper {
 
     public static DBObject wrap(final Book book) {

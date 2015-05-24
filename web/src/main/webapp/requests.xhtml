@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xml:lang="en" lang="en">
+<h:head>
+    <title>Hospital Request</title>
+</h:head>
+<h:body>
+    <h1>Requests:</h1>
+    <h:form>
+        <h:dataTable value="#{requestsPageBean.requests}" var="i">
+            <h:column><f:facet name = "header">Name</f:facet>#{i.firstName} #{i.lastName}</h:column>
+            <h:column><f:facet name = "header">Illness</f:facet>#{i.illnessDescription}</h:column>
+            <h:column><f:facet name = "header">Symptoms</f:facet>#{i.symptoms}</h:column>
+            <h:column><f:facet name = "header">Phone</f:facet>#{i.phoneNumber}</h:column>
+            <h:column><f:facet name = "header">Date</f:facet>#{i.preferredDate}</h:column>
+        </h:dataTable>
+    </h:form>
+
+    <hr/>
+    <h3>Add new Request</h3>
+    <h:form>
+        <h:panelGroup>
+            <h:outputText value="First name: "/>
+            <h:inputText value="#{requestsPageBean.request.firstName}"/>
+        </h:panelGroup><br/>
+
+        <h:panelGroup>
+            <h:outputText value="Last name: "/>
+            <h:inputText value="#{requestsPageBean.request.lastName}"/>
+        </h:panelGroup><br/>
+
+        <h:panelGroup>
+            <h:outputText value="Symptoms: "/>
+            <h:inputText value="#{requestsPageBean.request.symptoms}"/>
+        </h:panelGroup><br/>
+
+        <h:panelGroup>
+            <h:outputText value="Phone: "/>
+            <h:inputText value="#{requestsPageBean.request.phoneNumber}"/>
+        </h:panelGroup><br/>
+
+        <h:commandButton actionListener="#{requestsPageBean.addRequest()}"
+                         action="show" title="Add Request" value="submit"/>
+    </h:form>
+</h:body>
+</html>

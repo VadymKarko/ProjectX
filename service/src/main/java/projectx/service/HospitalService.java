@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import projectx.domain.Doctor;
 import projectx.domain.Request;
 import projectx.repository.connectors.MongoConnector;
-import projectx.repository.dao.DoctorDAO;
-import projectx.repository.dao.RequestDAO;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.List;
@@ -19,37 +16,25 @@ import java.util.List;
  */
 @Stateless
 public class HospitalService {
+    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
 
-    final Logger logger = LoggerFactory.getLogger(HospitalService.class);
     @EJB
     private MongoConnector connector;
-    private DoctorDAO doctorDAO;
-    private RequestDAO requestDAO;
 
-    @PostConstruct
-    private void init() {
-
-//        doctorDAO = new DoctorDAO(MongoConnector.getMongo(),MongoConnector.getMorphia(), Constants.DATABASE_NAME);
-       requestDAO = new RequestDAO();
-    }
 
     public List<Request> getAllRequests() {
-        List<Request>  result =requestDAO.findAllRequests();
-        logger.info("sizeof requestlist in service layer :"+result.size());
-        return requestDAO.findAllRequests();
+        return connector.getRequests().find();
     }
 
-    public void saveRequest(Request request) {
-        requestDAO.saveRequest(request);
+    public void saveRequest(final Request request) {
+        connector.getRequests().insert(request);
     }
 
     public List<Doctor> getAllDoctors(){
-       return doctorDAO.findAllDoctors();
+       return connector.getDoctors().find();
     }
 
-    public void saveDoctor(Doctor doctor){
-        doctorDAO.saveDoctor(doctor);
+    public void saveDoctor(final Doctor doctor){
+        connector.getDoctors().insert(doctor);
     }
-
-
 }

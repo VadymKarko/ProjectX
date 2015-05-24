@@ -12,14 +12,13 @@ import java.util.List;
  * @since 5/18/15
  */
 @Entity
-public class Doctor {
+public class Doctor implements DomainItem {
 
     @Id
     private ObjectId id;
 
     private String firstName;
     private String lastName;
-    private String fatherName;
 
     private String login;
     private String password;

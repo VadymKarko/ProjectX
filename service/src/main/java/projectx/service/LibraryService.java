@@ -15,6 +15,7 @@ import java.util.List;
  * @author vadym
  * @since 5/17/15
  */
+@Deprecated
 @Stateless
 public class LibraryService {
     @EJB

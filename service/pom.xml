@@ -39,18 +39,17 @@
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
         </dependency>
-        <!-- SLF4J logger-->
+
+        <!-- Logger-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.12</version>
         </dependency>
 
-        <!-- MongoDB MORPHIA "ORM" -->
+        <!-- MongoDB Morphia -->
         <dependency>
             <groupId>org.mongodb.morphia</groupId>
             <artifactId>morphia</artifactId>
-            <version>1.0.0-rc0</version>
         </dependency>
     </dependencies>
 
