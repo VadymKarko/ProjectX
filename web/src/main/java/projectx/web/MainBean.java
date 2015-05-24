@@ -1,11 +1,10 @@
 package projectx.web;
 
-import projectx.domain.Book;
-import projectx.service.LibraryService;
-
-import javax.ejb.EJB;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,25 +16,30 @@ import java.util.List;
  * @since 5/16/15
  */
 @ManagedBean
+@SessionScoped
 public class MainBean implements Serializable {
-    @EJB
-    private LibraryService service;
-    private Book book = new Book();
+    private List<String> list;
+    private String value;
 
-    public void setBook(Book book) {
-        this.book = book;
+    @PostConstruct
+    public void init() {
+        list = new ArrayList<String>();
+        list.add("default");
     }
 
-    public Book getBook() {
-        return book;
+    public List<String> getList() {
+        return list;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public void add() {
-        service.addBook(book);
-        book = new Book();
-    }
-
-    public List<Book> load() {
-        return service.getLibrary();
+        list.add(value);
     }
 }
