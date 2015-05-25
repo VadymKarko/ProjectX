@@ -13,7 +13,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author proger
+ * @author vadym
+ * @author vladimir
+ * @author oleg
  * @since 5/23/15
  */
 public class MongoConnectorTest {

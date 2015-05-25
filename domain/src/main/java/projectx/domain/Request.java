@@ -7,6 +7,8 @@ import org.mongodb.morphia.annotations.Id;
 import java.util.Date;
 
 /**
+ * TODO: JavaDoc
+ *
  * @author vladimir
  * @since 5/18/15
  */

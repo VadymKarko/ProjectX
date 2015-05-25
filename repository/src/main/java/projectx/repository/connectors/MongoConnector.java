@@ -16,24 +16,44 @@ import javax.ejb.Startup;
 import java.util.Arrays;
 
 /**
- * This is an example of repository
- * WARNING!: THIS IS TUTORIAL
+ * MongoConnector class provides access to MongoDB replica set
+ * and provides basic operations with domain objects ({@link Doctor}, {@link Request}, ...)
  *
  * @author vadym
+ * @author vladimir
+ * @author oleg
  * @since 5/17/15
  */
 @Singleton
 @Startup
 public class MongoConnector {
+    /**
+     * Host for MongoDB replica set instances
+     */
     public static final String HOST_NAME = "localhost";
+    /**
+     * MongoDb database name
+     */
     public static final String DATABASE_NAME = "hospital";
 
+    /**
+     * MongoDB native client
+     */
     private MongoClient mongo;
 
+    /**
+     * Data access to Doctors collection
+     */
     private DataProvider<Doctor> doctors;
+    /**
+     * Data access to Requests collection
+     */
     private DataProvider<Request> requests;
 
 
+    /**
+     * Initialise MongoDB client
+     */
     @PostConstruct
     public void init() {
         try {
@@ -59,19 +79,34 @@ public class MongoConnector {
         }
     }
 
+    /**
+     * Close MongoDB client
+     */
     @PreDestroy
     public void cleanup () {
         mongo.close();
     }
 
+    /**
+     * Checks if MongoDB primary node is available
+     * @return <code>true</code> if primary node is available, <code>false</code> otherwise
+     */
     public boolean isMasterAlive() {
         return mongo.getReplicaSetStatus().getMaster() != null;
     }
 
+    /**
+     * Provides access to Doctors collection
+     * @return Doctors collection
+     */
     public DataProvider<Doctor> getDoctors() {
         return doctors;
     }
 
+    /**
+     * Provides access to Requests collection
+     * @return Request collection
+     */
     public DataProvider<Request> getRequests() {
         return requests;
     }

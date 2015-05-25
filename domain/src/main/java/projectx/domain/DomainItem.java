@@ -1,8 +1,13 @@
 package projectx.domain;
 
+import java.io.Serializable;
+
 /**
- * @author proger
+ * Domain object interface.
+ * Should be implemented by every domain object.
+ *
+ * @author vadym
  * @since 5/24/15
  */
-public interface DomainItem {
+public interface DomainItem extends Serializable {
 }
