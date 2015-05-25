@@ -41,7 +41,7 @@ public class MongodInstanceBuilder {
 
 
 
-
+/*
     public static void main(String[] args)
             throws IOException, InterruptedException
     {
@@ -51,6 +51,6 @@ public class MongodInstanceBuilder {
         //p.destroy();
         //p1.destroy();
         //p2.destroy();
-    }
+    }*/
 
 }
