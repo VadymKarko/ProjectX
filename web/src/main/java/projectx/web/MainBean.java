@@ -1,7 +1,6 @@
 package projectx.web;
 
-import projectx.domain.Book;
-import projectx.service.LibraryService;
+import projectx.service.SessionService;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -20,23 +19,26 @@ import java.util.List;
 @ManagedBean
 public class MainBean implements Serializable {
     @EJB
-    private LibraryService service;
-    private Book book = new Book();
+    private SessionService service;
+    private String message;
 
-    public void setBook(Book book) {
-        this.book = book;
+    public List<String> getMessages() {
+        return service.getMessage();
     }
 
-    public Book getBook() {
-        return book;
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void add() {
-        service.addBook(book);
-        book = new Book();
+        service.addMessage(message);
     }
 
-    public List<Book> load() {
-        return service.getLibrary();
+    public List<String> getMembers() {
+        return service.getClusterInfo();
     }
 }
