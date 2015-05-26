@@ -29,7 +29,7 @@ public class GlassfishBuilder {
         else if (parametr.equals("stop-domain")){script=parametr +" "+ domain;}
         else {throw  new IllegalArgumentException("Invalid command");}
         String[] command = {"bash","-c", "echo proger| sudo -S asadmin " + script };
-        Process process = Runtime.getRuntime().exec(command);
+        Runtime.getRuntime().exec(command);
     }
     public void runNodeInstanceCommand(String parametr,String node) throws IOException,
             InterruptedException, IllegalArgumentException{
@@ -38,7 +38,7 @@ public class GlassfishBuilder {
         else if (parametr.equals("stop")){script=parametr + "-instance "+ node;}
         else {throw  new IllegalArgumentException("Invalid command");}
         String[] command = {"bash","-c", "echo proger| sudo -S asadmin " + script };
-        Process process = Runtime.getRuntime().exec(command);
+        Runtime.getRuntime().exec(command);
 
     }
 }
