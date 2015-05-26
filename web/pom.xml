@@ -15,8 +15,8 @@
 
     <repositories>
         <repository>
-            <id>primefaces-repository</id>
-            <name>Primefaces repository</name>
+            <id>prime-repo</id>
+            <name>Prime Repo</name>
             <url>http://repository.primefaces.org</url>
         </repository>
     </repositories>
@@ -35,13 +35,19 @@
             <artifactId>javax.ejb-api</artifactId>
         </dependency>
 
+        <!-- PrimeFaces -->
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>5.2</version>
+        </dependency>
+
         <!-- JSF 2 -->
         <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-api</artifactId>
             <version>2.1.11</version>
         </dependency>
-
         <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-impl</artifactId>
@@ -64,12 +70,6 @@
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
             <version>2.1</version>
-        </dependency>
-        <!-- primefaces -->
-        <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>5.2</version>
         </dependency>
     </dependencies>
 
