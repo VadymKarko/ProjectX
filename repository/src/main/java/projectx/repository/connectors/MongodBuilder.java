@@ -8,16 +8,17 @@ import java.util.Map;
  * @author proger
  * @since 5/25/15
  */
-public class MongodInstanceBuilder {
+public class MongodBuilder {
     private static String dbpath;
     private static int nodePort0 = 27018;
     private static int nodePort1 = 27019;
     private static int nodePort2 = 27020;
     private static Map<Integer, Process> mongodMap = new HashMap<Integer, Process>();
-    private static MongodInstanceBuilder instance;
+    private static MongodBuilder instance;
+    private static String replicaSet = "rs0";
 
-    public static MongodInstanceBuilder getInstance(){
-        if (instance == null){instance = new MongodInstanceBuilder();}
+    public static MongodBuilder getInstance(){
+        if (instance == null){instance = new MongodBuilder();}
         return instance;
     }
     public  void runMongod(int port) throws IOException,
@@ -37,10 +38,11 @@ public class MongodInstanceBuilder {
             if (mongodMap.keySet().toArray()[i].equals(port)){ stopMongod(port); }
         }
         String[] command = {"bash","-c","echo proger| sudo -S mongod --port "
-                + port + " --dbpath " + dbpath + " --replSet rs0 "};
+                + port + " --dbpath " + dbpath + " --replSet " + replicaSet};
         Process process = Runtime.getRuntime().exec(command);
         mongodMap.put(port,process);
     }
+
 
     public static Process getProcess(int port){
         return mongodMap.get(port);
