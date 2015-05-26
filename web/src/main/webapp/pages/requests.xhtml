@@ -1,0 +1,113 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <p:outputPanel deferred="true" deferredMode="visible">
+            <h3>Requests</h3>
+        </p:outputPanel>
+        <h:form id="main">
+
+            <p:dataTable var="request"
+                         id="infTable"
+                         widgetVar="requestVar"
+                         value="#{requests.requests}"
+                         paginator="true"
+                         paginatorAlwaysVisible="true"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5, 10, 20">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="Add your Request:"/>
+                        <p:commandButton value="New Request" type="button"
+                                         onclick="PF('dlg1').show();"
+                                disabled="#{!requests.primaryUp}">
+                        </p:commandButton>
+                    </h:panelGroup>
+                </f:facet>
+
+
+                <p:column headerText="Name" style="width: 2em;" styleClass="columnAlign">
+                    <h:outputText value="${request.lastName} ${request.firstName}"/>
+                </p:column>
+
+                <p:column headerText="Illness" style="width: 2em;" styleClass="columnAlign">
+                    <h:outputText value="${request.illnessDescription}"/>
+                </p:column>
+
+                <p:column headerText="Sympoms" style="width: 2em;" styleClass="columnAlign">
+                    <h:outputText value="${request.symptoms}"/>
+                </p:column>
+
+                <p:column headerText="Phone" style="width: 2em;" styleClass="columnAlign">
+                    <h:outputText value="${request.phoneNumber}"/>
+                </p:column>
+
+                <p:column headerText="Date" style="width: 2em;" styleClass="columnAlign">
+                    <h:outputText value="${request.preferredDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog header="Add request" widgetVar="dlg1" modal="true" height="100">
+            <p:panelGrid id="panel" columns="2"
+                         style="margin: 0 auto;">
+
+                <h:outputText value="First Name"/>
+                <p:row>
+                    <p:inputText id="firstName" style="margin: 10px;"
+                                 value="#{requests.request.firstName}"/>
+                </p:row>
+
+                <h:outputText value="Last Name:"/>
+                <p:row>
+                    <p:inputText id="lastName" style="margin: 10px;"
+                                 value="#{requests.request.lastName}"/>
+
+                </p:row>
+
+                <h:outputText value="Father Name"/>
+                <p:row>
+                    <p:inputText id="fatherName" style="margin: 10px;"
+                                 value="#{requests.request.fatherName}"/>
+                </p:row>
+
+                <h:outputText value="Illness"/>
+                <p:row>
+                    <p:inputText id="illness" style="margin: 10px;"
+                                 value="#{requests.request.illnessDescription}"/>
+                </p:row>
+
+                <h:outputText value="Symptoms"/>
+                <p:row>
+                    <p:inputText id="symptoms" style="margin: 10px;"
+                                 value="#{requests.request.symptoms}"/>
+                </p:row>
+
+                <h:outputText value="Preffered Date"/>
+                <p:row>
+                    <p:calendar id="birthDate" style="margin: 10px;"
+                                value="#{requests.request.preferredDate}"/>
+                </p:row>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Cancel" onclick="PF('dlg1').hide();" styleClass="m10"/>
+                    <p:commandButton id="save" value="Save Request"
+                                     type="submit"
+                                     style="margin: 10px;"
+                                     actionListener="#{requestsPageBean.addRequest()}"
+                                     update=":main"/>
+                </f:facet>
+            </p:panelGrid>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>
+

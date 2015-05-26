@@ -21,6 +21,9 @@ public class Doctor implements DomainItem {
 
     private String firstName;
     private String lastName;
+    private String fatherName;
+
+    private String specialization;
 
     private String login;
     private String password;
@@ -37,6 +40,22 @@ public class Doctor implements DomainItem {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getFatherName() {
+        return fatherName;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
     }
 
     public void setLastName(String lastName) {

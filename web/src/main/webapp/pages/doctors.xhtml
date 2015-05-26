@@ -1,0 +1,34 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <p:outputPanel deferred="true" deferredMode="visible">
+            <h3>Doctors</h3>
+        </p:outputPanel>
+        <h:form id="main">
+
+            <p:dataTable var="doctor"
+                         id="infTable"
+                         widgetVar="requestVar"
+                         value="#{doctors.doctors}"
+                         paginator="true"
+                         paginatorAlwaysVisible="true"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5, 10, 20">
+                <p:column headerText="Name" style="width: 2em;" styleClass="columnAlign">
+                    <h:outputText value="${doctor.lastName} ${doctor.firstName} ${doctor.fatherName}"/>
+                </p:column>
+                <p:column headerText="specialization" style="width: 2em;" styleClass="columnAlign">
+                    <h:outputText value="${doctor.specialization}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
+

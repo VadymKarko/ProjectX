@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+<f:view>
+    <h:head>
+        <title>
+            <ui:insert name="title">
+                Hospital Service
+            </ui:insert>
+        </title>
+
+        <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+        <script src="http://maps.google.com/maps/api/js?sensor=false&amp;v=3.4" type="text/javascript"></script>
+    </h:head>
+    <h:body>
+        <ui:insert name="header">
+            <p:panelGrid styleClass="noBorders" style="width: 100%">
+                <p:row>
+                    <p:column style="width: 5em;">
+                        <h:graphicImage value="/resources/images/logo.png"
+                                        style="width: 5em; height: 5em"/>
+                    </p:column>
+                    <p:column>
+                        <h:form id="menuForm" prependId="false">
+                            <p:menubar id="menubar" autoDisplay="false">
+                                <p:menuitem value="Requests" style="margin-left: .5em;"
+                                            action="/pages/requests?faces-redirect=true"/>
+                                <p:menuitem value="Doctors" style="margin-left: .5em;"
+                                            action="/pages/doctors?faces-redirect=true"/>
+                                <p:menuitem value="Login" style="margin-left: .5em;"
+                                            rendered="false"/>
+                            </p:menubar>
+                        </h:form>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </ui:insert>
+        <ui:insert name="content">
+            <p>Default content</p>
+        </ui:insert>
+    </h:body>
+</f:view>
+</html>

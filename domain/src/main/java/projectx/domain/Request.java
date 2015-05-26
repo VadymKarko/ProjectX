@@ -20,6 +20,7 @@ public class Request implements DomainItem {
 
     private String firstName;
     private String lastName;
+    private String fatherName;
     private String illnessDescription;
     private String symptoms;
     private String phoneNumber;
@@ -36,6 +37,14 @@ public class Request implements DomainItem {
         this.symptoms = symptoms;
         this.phoneNumber = phoneNumber;
         this.preferredDate = date;
+    }
+
+    public String getFatherName() {
+        return fatherName;
+    }
+
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
     }
 
     public String getFirstName() {

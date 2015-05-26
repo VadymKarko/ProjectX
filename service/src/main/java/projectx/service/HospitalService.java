@@ -33,6 +33,10 @@ public class HospitalService {
         return connector.getRequests().find();
     }
 
+    public boolean isPrimaryUp(){
+        return connector.isMasterAlive();
+    }
+
     /**
      * ToDo:
      * @param request
