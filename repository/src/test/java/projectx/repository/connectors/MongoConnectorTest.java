@@ -1,73 +1,82 @@
 package projectx.repository.connectors;
 
 import com.mongodb.MongoException;
-import com.mongodb.ServerAddress;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import projectx.domain.Request;
 
-import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
- * @author proger
+ * @author vadym
+ * @author vladimir
+ * @author oleg
  * @since 5/23/15
  */
 public class MongoConnectorTest {
+    private MongoConnector connector;
 
-    @Test
-    public void testInit() throws UnknownHostException, MongoException {
-    MongoConnector mongoConnector = new MongoConnector();
-        mongoConnector.init();
-        List<Request> library = mongoConnector.selectRequests();
-        assertEquals("Oleg", library.get(0).getFirstName());
+    @Before
+    public void setUp() throws Exception {
+        connector = new MongoConnector();
+        connector.init();
     }
 
-    @Test
-    public void testaddServerAddress() throws IllegalArgumentException,UnknownHostException {
-        MongoConnector mongoConnector = new MongoConnector();
-        ArrayList<ServerAddress> testAddressList = new ArrayList<ServerAddress>();
-        mongoConnector.addServerAddress(testAddressList,new ServerAddress("proger-vm",27018));
-        ArrayList<ServerAddress> addressList = new ArrayList<ServerAddress>();
-        addressList.add(new ServerAddress("proger-vm",27018));
-        assertEquals(testAddressList, addressList);
-    }
-
-    @Test
-    public void testReplMasterStatus() throws MongoException {
-        MongoConnector mongoConnector = new MongoConnector();
-        mongoConnector.init();
-        assertFalse(mongoConnector.replMasterStatus(mongoConnector.getMongo()));
-    }
-
-    @Test
-    public void testSelectRequest() throws MongoException {
-        MongoConnector mongoConnector = new MongoConnector();
-        mongoConnector.init();
-        List<Request> requests = mongoConnector.selectRequests();
-        assertEquals("Oleg", requests.get(0).getFirstName());
-    }
-/*
-   @Test
-    public void testSelectDoctors() throws MongoException {
-        MongoConnector mongoConnector = new MongoConnector();
-        mongoConnector.init();
-        List<Doctor> doctors = mongoConnector.selectDoctors();
-        assertEquals("Oleg", doctors.get(0).getFirstName());
-    }*/
-
-    @Test
-    public void testInsertRequests() throws MongoException {
-
-    }
-
-    @Test
-    public void testInsertDoctors() throws MongoException {
-
+    @After
+    public void tearDown() throws Exception {
+        connector.getRequests().drop();
+        connector.getDoctors().drop();
+        connector.cleanup();
     }
 
 
+    @Test
+    public void shouldInit() throws Exception {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+
+    @Test
+    public void shouldInsertAndSelectRequest() {
+        final Request expected = new Request(
+                "Vladimir",
+                "Mishin",
+                "extra high working productivity",
+                "happiness, success, profit",
+                "+0(123)456-78-90",
+                new Date()
+        );
+
+        connector.getRequests().insert(expected);
+        List<Request> list = connector.getRequests().find();
+
+        System.out.println(list);
+
+        assertEquals(expected.getId(), list.get(0).getId());
+    }
+
+
+    @Test
+    public void shouldSelectDoctors() throws MongoException {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+
+    @Ignore
+    @Test
+    public void shouldInsertRequests() throws Exception {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+
+    @Ignore
+    @Test
+    public void shouldInsertDoctors() throws Exception {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

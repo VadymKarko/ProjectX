@@ -1,103 +1,113 @@
 package projectx.repository.connectors;
 
-import com.mongodb.*;
+import com.mongodb.MongoClient;
+import com.mongodb.ReadPreference;
+import com.mongodb.ServerAddress;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
 import projectx.domain.Doctor;
 import projectx.domain.Request;
-import projectx.repository.wrappers.DoctorWrapper;
-import projectx.repository.wrappers.RequestWrapper;
+import projectx.repository.dao.DataProvider;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
+import javax.ejb.Startup;
+import java.util.Arrays;
 
 /**
- * This is an example of repository
- * WARNING!: THIS IS TUTORIAL
+ * MongoConnector class provides access to MongoDB replica set
+ * and provides basic operations with domain objects ({@link Doctor}, {@link Request}, ...)
  *
  * @author vadym
+ * @author vladimir
+ * @author oleg
  * @since 5/17/15
  */
 @Singleton
+@Startup
 public class MongoConnector {
+    /**
+     * Host for MongoDB replica set instances
+     */
+    public static final String HOST_NAME = "localhost";
+    /**
+     * MongoDb database name
+     */
+    public static final String DATABASE_NAME = "hospital";
+
+    /**
+     * MongoDB native client
+     */
     private MongoClient mongo;
-    private DB dbRequests;
-    private DB dbDoctors;
-    private DBCollection collectionRequests;
-    private DBCollection collectionDoctors;
-    private ReplicaSetStatus replicaSetStatus;
+
+    /**
+     * Data access to Doctors collection
+     */
+    private DataProvider<Doctor> doctors;
+    /**
+     * Data access to Requests collection
+     */
+    private DataProvider<Request> requests;
+
+
+    /**
+     * Initialise MongoDB client
+     */
     @PostConstruct
     public void init() {
         try {
-            ArrayList<ServerAddress> addressList = new ArrayList<ServerAddress>();
-            addServerAddress(addressList, new ServerAddress("proger-vm", (int) 27018));
-            addServerAddress(addressList, new ServerAddress("proger-vm", (int) 27019));
-            addServerAddress(addressList, new ServerAddress("proger-vm", (int) 27020));
-            mongo = new MongoClient(addressList);
+            // TODO: Hardcoded ports? Foooo...horrible coding style. Fix!
+            mongo = new MongoClient(Arrays.asList(
+                    new ServerAddress(HOST_NAME, 27018),
+                    new ServerAddress(HOST_NAME, 27019),
+                    new ServerAddress(HOST_NAME, 27020)
+            ));
+
             mongo.setReadPreference(ReadPreference.secondary());
-            dbRequests = mongo.getDB("requests");
-            dbDoctors = mongo.getDB("doctors");
-            collectionRequests = dbRequests.getCollection("requests");
-            collectionDoctors = dbRequests.getCollection("doctors");
-            if (collectionRequests  == null) {
-                    collectionRequests  = dbRequests.createCollection("requests", null);
-                }
-            if (collectionDoctors  == null){
-                    collectionDoctors  = dbDoctors.createCollection("requests", null);
-                }
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (MongoException.Network e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (MongoException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (IllegalArgumentException e) {
+
+            final Morphia morphia = new Morphia();
+            final Datastore datastore = morphia.createDatastore(mongo, DATABASE_NAME);
+            morphia.map(Doctor.class, Request.class);
+
+            doctors = new DataProvider<Doctor>(Doctor.class, datastore);
+            requests = new DataProvider<Request>(Request.class, datastore);
+
+        } catch (Exception e) {
+            // should catch exceptions instead of throwing, because of @PostConstruct
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public void insertRequest(final Request request) {
-        collectionRequests.insert(RequestWrapper.wrap(request));
+    /**
+     * Close MongoDB client
+     */
+    @PreDestroy
+    public void cleanup () {
+        mongo.close();
     }
 
-    public void insertDoctor(final Doctor doctor) {
-        collectionDoctors.insert(DoctorWrapper.wrap(doctor));
+    /**
+     * Checks if MongoDB primary node is available
+     * @return <code>true</code> if primary node is available, <code>false</code> otherwise
+     */
+    public boolean isMasterAlive() {
+        return mongo.getReplicaSetStatus().getMaster() != null;
     }
 
-    public void addServerAddress(ArrayList<ServerAddress> addressList, ServerAddress address){
-        addressList.add(address);
-    }
-
-    public boolean replMasterStatus(MongoClient mongo){
-        replicaSetStatus = mongo.getReplicaSetStatus();
-        return replicaSetStatus.getMaster() != null;
-    }
-
-
-    public MongoClient getMongo(){
-        return this.mongo;
-    }
-
-
-    public ArrayList<Request> selectRequests() {
-        final ArrayList<Request> requests = new ArrayList<Request>();
-        final DBCursor cursor = collectionRequests.find();
-        Request request;
-        while (cursor.hasNext()) {
-            request = RequestWrapper.unwrap(cursor.next());
-            requests.add(request);
-        }
-        return requests;
-    }
-
-    public ArrayList<Doctor> selectDoctors() {
-        final ArrayList<Doctor> doctors = new ArrayList<Doctor>();
-        final DBCursor cursor = collectionDoctors.find();
-        Doctor doctor;
-        while (cursor.hasNext()) {
-            doctor = DoctorWrapper.unwrap(cursor.next());
-            doctors.add(doctor);
-        }
+    /**
+     * Provides access to Doctors collection
+     * @return Doctors collection
+     */
+    public DataProvider<Doctor> getDoctors() {
         return doctors;
+    }
+
+    /**
+     * Provides access to Requests collection
+     * @return Request collection
+     */
+    public DataProvider<Request> getRequests() {
+        return requests;
     }
 }
