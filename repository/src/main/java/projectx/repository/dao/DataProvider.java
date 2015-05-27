@@ -43,6 +43,22 @@ public class DataProvider<T extends DomainItem> {
         return ds.find(clazz).asList();
     }
 
+
+    /**
+     * Selects entries by criteria
+     *
+     * @param field criteria field
+     * @param value value of criteria
+     * @return a list of entries
+     */
+    public List<T> find(String field, Object value) {
+        return ds.createQuery(clazz).filter(field, value).asList();
+    }
+
+    public T findOne(String field, Object value) {
+        return ds.createQuery(clazz).filter(field, value).get();
+    }
+
     /**
      * ToDo:
      * @param item

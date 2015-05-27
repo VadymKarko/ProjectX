@@ -27,6 +27,9 @@ public class Doctor implements DomainItem {
     @Reference
     private List<Request> requestList;
 
+    public Doctor() {
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -41,6 +44,10 @@ public class Doctor implements DomainItem {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getName() {
+        return firstName + " " + lastName;
     }
 
     public String getLogin() {

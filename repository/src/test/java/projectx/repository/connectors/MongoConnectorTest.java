@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import projectx.domain.Doctor;
 import projectx.domain.Request;
 
 import java.util.Date;
@@ -29,8 +30,8 @@ public class MongoConnectorTest {
 
     @After
     public void tearDown() throws Exception {
-        connector.getRequests().drop();
-        connector.getDoctors().drop();
+//        connector.getRequests().drop();
+//        connector.getDoctors().drop();
         connector.cleanup();
     }
 
@@ -74,9 +75,18 @@ public class MongoConnectorTest {
     }
 
 
-    @Ignore
+    //@Ignore
     @Test
     public void shouldInsertDoctors() throws Exception {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Doctor doctor = new Doctor();
+        doctor.setFirstName("Gregory");
+        doctor.setLastName("House");
+        doctor.setLogin("House M.D.");
+        doctor.setPassword("password");
+
+        connector.getDoctors().insert(doctor);
+        List<Doctor> list = connector.getDoctors().find();
+
+        System.out.println(list);
     }
 }

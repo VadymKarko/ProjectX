@@ -10,6 +10,15 @@
     <title>Hospital Request</title>
 </h:head>
 <h:body>
+    <!-- Debug info -->
+    <h:outputText value="user: #{empty loginBean.currentUser ? 'guest' : loginBean.currentUser.name}" style="font-size:xx-small;"/><br/>
+    <h:outputText value="session id: #{session.id}" style="font-size:xx-small;"/><br/>
+    <!-- ... -->
+
+    <h:form>
+        <h:commandButton value="Sign out" action="#{loginBean.signOut()}"/>
+    </h:form>
+
     <h1>Requests:</h1>
     <h:form>
         <h:dataTable value="#{requestsPageBean.requests}" var="i">
@@ -24,28 +33,22 @@
     <hr/>
     <h3>Add new Request</h3>
     <h:form>
-        <h:panelGroup>
+        <h:panelGrid id="grid" columns="2">
             <h:outputText value="First name: "/>
             <h:inputText value="#{requestsPageBean.request.firstName}"/>
-        </h:panelGroup><br/>
 
-        <h:panelGroup>
             <h:outputText value="Last name: "/>
             <h:inputText value="#{requestsPageBean.request.lastName}"/>
-        </h:panelGroup><br/>
 
-        <h:panelGroup>
             <h:outputText value="Symptoms: "/>
             <h:inputText value="#{requestsPageBean.request.symptoms}"/>
-        </h:panelGroup><br/>
 
-        <h:panelGroup>
             <h:outputText value="Phone: "/>
             <h:inputText value="#{requestsPageBean.request.phoneNumber}"/>
-        </h:panelGroup><br/>
 
-        <h:commandButton actionListener="#{requestsPageBean.addRequest()}"
+            <h:commandButton actionListener="#{requestsPageBean.addRequest()}"
                          action="show" title="Add Request" value="submit"/>
+        </h:panelGrid>
     </h:form>
 </h:body>
 </html>

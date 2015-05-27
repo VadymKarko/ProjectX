@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xml:lang="en" lang="en">
+<h:head>
+    <title>Hospital ProjectX</title>
+</h:head>
+<h:body>
+    <h1>Sign In</h1>
+
+    <!-- Debug info -->
+    <h:outputText value="user: #{empty loginBean.currentUser ? 'guest' : loginBean.currentUser.name}" style="font-size:xx-small;"/><br/>
+    <h:outputText value="session id: #{session.id}" style="font-size:xx-small;"/><br/>
+    <!-- ... -->
+
+    <h:form id="form">
+        <h:messages/>
+        <h:panelGrid id="grid" columns="2">
+            <h:outputText value="Login: "/>
+            <h:inputText value="#{loginBean.login}"/>
+
+            <h:outputText value="Password: "/>
+            <h:inputText value="#{loginBean.password}"/>
+
+            <h:commandButton value="Sign in" action="#{loginBean.signIn()}"/>
+        </h:panelGrid>
+    </h:form>
+</h:body>
+</html>
