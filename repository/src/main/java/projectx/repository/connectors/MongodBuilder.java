@@ -57,19 +57,6 @@ public class MongodBuilder {
         System.out.println(mongodMap.entrySet());
     }
 
-/*
 
-    public static void main(String[] args)
-            throws IOException, InterruptedException, IllegalArgumentException
-    {
-       MongodInstanceBuilder builder = new MongodInstanceBuilder();
-        builder.runMongod(27020);
-        builder.showMapEntries();
-        builder.runMongod(27020);
-        builder.showMapEntries();
-        builder.stopMongod(27020);
-        builder.showMapEntries();
-
-    }*/
 
 }

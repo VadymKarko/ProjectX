@@ -56,15 +56,5 @@ public class GlassfishBuilder {
         System.out.println(line);
     }
     input.close();}
-/*
-public static void main(String[] args)
-            throws IOException, InterruptedException, IllegalArgumentException
-    {
-       // GlassfishBuilder builder = new GlassfishBuilder();
-      //builder.runServerInstanceCommand("start");
-      //builder.runClusterInstanceCommand("start");
-        //builder.runNodeInstanceCommand("stop","node1");
 
-
-    }*/
 }
