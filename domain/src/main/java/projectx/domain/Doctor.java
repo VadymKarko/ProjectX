@@ -5,6 +5,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class Doctor implements DomainItem {
     private String login;
     private String password;
     @Reference
-    private List<Request> requestList;
+    private List<Request> requestList = new ArrayList<Request>();
 
     public Doctor() {
     }
@@ -80,5 +81,16 @@ public class Doctor implements DomainItem {
 
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", requestList=" + requestList +
+                '}';
     }
 }

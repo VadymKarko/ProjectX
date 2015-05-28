@@ -3,34 +3,12 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xml:lang="en" lang="en">
 <h:head>
     <title>Hospital Request</title>
 </h:head>
 <h:body>
-    <!-- Debug info -->
-    <h:outputText value="user: #{empty loginBean.currentUser ? 'guest' : loginBean.currentUser.name}" style="font-size:xx-small;"/><br/>
-    <h:outputText value="session id: #{session.id}" style="font-size:xx-small;"/><br/>
-    <!-- ... -->
-
-    <h:form>
-        <h:commandButton value="Sign out" action="#{loginBean.signOut()}"/>
-    </h:form>
-
-    <h1>Requests:</h1>
-    <h:form>
-        <h:dataTable value="#{requestsPageBean.requests}" var="i">
-            <h:column><f:facet name = "header">Name</f:facet>#{i.firstName} #{i.lastName}</h:column>
-            <h:column><f:facet name = "header">Illness</f:facet>#{i.illnessDescription}</h:column>
-            <h:column><f:facet name = "header">Symptoms</f:facet>#{i.symptoms}</h:column>
-            <h:column><f:facet name = "header">Phone</f:facet>#{i.phoneNumber}</h:column>
-            <h:column><f:facet name = "header">Date</f:facet>#{i.preferredDate}</h:column>
-        </h:dataTable>
-    </h:form>
-
-    <hr/>
     <h3>Add new Request</h3>
     <h:form>
         <h:panelGrid id="grid" columns="2">

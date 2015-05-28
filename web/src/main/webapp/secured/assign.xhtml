@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xml:lang="en" lang="en">
+<h:head>
+    <title>Hospital Request</title>
+</h:head>
+<h:body>
+    <!-- Debug info -->
+    <h:outputText value="user: #{empty loginBean.currentUser ? 'guest' : loginBean.currentUser.name}" style="font-size:xx-small;"/><br/>
+    <h:outputText value="session id: #{session.id}" style="font-size:xx-small;"/><br/>
+    <c:forEach var="i" items="#{assignPageBean.selected}">
+        <h:outputText value="#{i.id} #{i.name}" style="font-size:xx-small;"/><br/>
+    </c:forEach>
+    ----<br/>
+    <c:forEach var="i" items="#{assignPageBean.getSelectedList()}">
+        <h:outputText value="#{i.id} #{i.name}" style="font-size:xx-small;"/><br/>
+    </c:forEach>
+    <!-- ... -->
+
+    <h:form>
+        <h:commandButton value="Sign out" action="#{loginBean.signOut()}"/>
+    </h:form>
+
+    <h1>Assign requests:</h1>
+    <h:form>
+        <p:dataTable var="i"
+                     value="#{assignPageBean.requests}"
+                     selection="#{assignPageBean.selected}"
+                     rowSelectMode="checkbox"
+                     rowKey="#{i.id}">
+            <!--<p:ajax event="rowSelect" listener="#{assignPageBean.onSelect}" />-->
+            <!--<p:ajax event="rowUnselect" listener="#{assignPageBean.onUnselect}" />-->
+
+            <p:ajax event="rowSelectCheckbox" listener="#{assignPageBean.onSelect}"/>
+            <p:ajax event="rowUnselectCheckbox" listener="#{assignPageBean.onUnselect}"/>
+
+            <!--<f:facet name="header">Checkbox</f:facet>-->
+            <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+            <p:column headerText="Name">
+                <h:outputText value="#{i.name}" />
+            </p:column>
+            <p:column headerText="Illness">
+                <h:outputText value="#{i.illnessDescription}" />
+            </p:column>
+            <p:column headerText="Symptoms">
+                <h:outputText value="#{i.symptoms}" />
+            </p:column>
+            <p:column headerText="Phone">
+                <h:outputText value="#{i.phoneNumber}" />
+            </p:column>
+            <p:column headerText="Date">
+                <h:outputText value="#{i.preferredDate}" />
+            </p:column>
+            <f:facet name="footer">
+                <h:commandButton actionListener="#{assignPageBean.save()}"
+                                 action="show" value="Save"/>
+            </f:facet>
+        </p:dataTable>
+    </h:form>
+
+</h:body>
+</html>

@@ -13,6 +13,15 @@
 
     <name>Web</name>
 
+    <repositories>
+        <!-- Prime Faces -->
+        <repository>
+            <id>prime-repo</id>
+            <name>Prime Repo</name>
+            <url>http://repository.primefaces.org</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Service Layer -->
         <dependency>
@@ -37,6 +46,13 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
+        <!-- PrimeFaces -->
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>5.2</version>
         </dependency>
     </dependencies>
 

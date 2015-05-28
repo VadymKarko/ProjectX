@@ -56,4 +56,13 @@ public class HospitalService {
     public void saveDoctor(final Doctor doctor){
         connector.getDoctors().insert(doctor);
     }
+
+    /**
+     * ToDo:
+     * @param doctor
+     */
+    public void assignRequests(Doctor doctor, final List<Request> requests) {
+        doctor.setRequestList(requests);
+        connector.getDoctors().update(doctor);
+    }
 }

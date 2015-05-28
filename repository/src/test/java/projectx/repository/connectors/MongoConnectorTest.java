@@ -79,10 +79,11 @@ public class MongoConnectorTest {
     @Test
     public void shouldInsertDoctors() throws Exception {
         Doctor doctor = new Doctor();
-        doctor.setFirstName("Gregory");
-        doctor.setLastName("House");
-        doctor.setLogin("House M.D.");
-        doctor.setPassword("password");
+        doctor.setFirstName("John");
+        doctor.setLastName("Dolittle");
+        doctor.setLogin("Dolittle M.D.");
+        doctor.setPassword("password3");
+        doctor.getRequestList().addAll(connector.getRequests().find());
 
         connector.getDoctors().insert(doctor);
         List<Doctor> list = connector.getDoctors().find();

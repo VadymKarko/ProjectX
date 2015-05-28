@@ -53,7 +53,7 @@ public class LoginBean implements Serializable {
     public String signIn() {
         try {
             service.signIn(getSessionId(), login, password);
-            return "/secured/requests.xhtml";
+            return "/secured/assign.xhtml?faces-redirect=true";
 
         } catch (AuthenticationException e) {
             // if authentication fails...

@@ -54,6 +54,10 @@ public class Request implements DomainItem {
         this.lastName = lastName;
     }
 
+    public String getName() {
+        return firstName + " " + lastName;
+    }
+
     public String getIllnessDescription() {
         return illnessDescription;
     }
